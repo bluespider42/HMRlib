@@ -153,3 +153,9 @@ bool HMR3300::term_complete()
         }
         return false;
 }
+
+int HMR3300::hmrstrcmp(const char *str1, const char *str2) {
+    while (*str1 && *str1 == *str2)
+        ++str1, ++str2;
+    return *str1;
+}
