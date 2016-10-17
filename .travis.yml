@@ -62,4 +62,4 @@ install:
     - pip install -U platformio
 
 script:
-    - platformio ci --lib="./src" --board=adafruit_feather_m0_usb
+    - platformio ci --lib="." --board=adafruit_feather_m0_usb
