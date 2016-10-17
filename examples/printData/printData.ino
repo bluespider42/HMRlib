@@ -1,7 +1,7 @@
 #include <HMRlib.h>
 
 
-#if defined(__AVR_ATmega32U4__)
+#if defined(__AVR_ATmega328P__)
     #include "SoftwareSerial.h"
     SoftwareSerial Serial1(0, 1);
 #endif
