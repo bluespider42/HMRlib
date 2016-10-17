@@ -1,10 +1,10 @@
 #include <HMRlib.h>
 
 
-#if defined(__AVR_ATmega32U4__) {
+#if defined(__AVR_ATmega32U4__)
     #include "SoftwareSerial.h"
     SoftwareSerial Serial1(0, 1);
-}
+#endif
 
 HMR3300 hmr;
 
