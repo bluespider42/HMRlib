@@ -31,24 +31,24 @@ stages:
 mega2560:
     stage: build
     script:
-        - platformio ci --lib="." --board=megaatmega2560
+        - platformio ci --lib="./src" --board=megaatmega2560
 
 feather_m0:
     stage: build
     script:
-        - platformio ci --lib="." --board=adafruit_feather_m0_usb
+        - platformio ci --lib="./src" --board=adafruit_feather_m0_usb
 
 feather32u4:
     stage: build
     script:
-        - platformio ci --lib="." --board=feather32u4
+        - platformio ci --lib="./src" --board=feather32u4
 
 zero:
     stage: build
     script:
-        - platformio ci --lib="." --board=zero
+        - platformio ci --lib="./src" --board=zero
 
 zeroUSB:
     stage: build
     script:
-        - platformio ci --lib="." --board=zeroUSB
+        - platformio ci --lib="./src" --board=zeroUSB
