@@ -56,7 +56,7 @@ cache:
 env:
 #    - PLATFORMIO_CI_SRC=path/to/test/file.c
     - PLATFORMIO_CI_SRC=examples/printData/printData.ino
-#    - PLATFORMIO_CI_SRC=path/to/test/directory
+    - PLATFORMIO_CI_SRC=src
 
 install:
     - pip install -U platformio
