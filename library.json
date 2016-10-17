@@ -10,7 +10,7 @@
     "repository":
     {
         "type": "git",
-        "url": "https://gitlab.com/obic/HMRlib"
+        "url": "https://github.com/bluespider42/HMRlib"
     },
     "frameworks": "arduino",
     "platforms": "atmelavr, atmelsam"

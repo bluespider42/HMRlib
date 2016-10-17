@@ -32,7 +32,6 @@ bool HMR3300::encode(char c)
             _parity ^= c;
         case '\r':
         case '\n':
-        case '*':
             if (_term_offset < sizeof(_term))
             {
                 _term[_term_offset] = 0;
@@ -42,7 +41,8 @@ bool HMR3300::encode(char c)
             _term_offset = 0;
             _is_checksum_term = c =='*';
             return valid_sentence;
-        case '$': //sentence begin
+        case '#': //sentence begin
+        case '*':
             _term_number = _term_offset = 0;
             _parity = 0;
             _sentence_type = _HMR_SENTENCE_OTHER;
