@@ -51,7 +51,7 @@ private:
     byte _sentence_type;
     byte _term_number;
     byte _term_offset;
-    bool _hmr_data_good;
+    bool _end_of_sentence;
 
     //internal utilities
     int from_hex(char a);

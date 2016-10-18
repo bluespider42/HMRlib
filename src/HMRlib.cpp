@@ -11,7 +11,7 @@ HMR3300::HMR3300()
 , _sentence_type(_HMR_SENTENCE_OTHER)
 , _term_number(0)
 , _term_offset(0)
-, _hmr_data_good(false)
+, _end_of_sentence(false)
 
 
 //HMR3300::init() {
@@ -35,9 +35,11 @@ bool HMR3300::encode(char c)
                 _term[_term_offset] = 0;
                 valid_sentence = term_complete();
             }
+            _end_of_sentence = true;
             ++_term_number;
             _term_offset = 0;
             return valid_sentence;
+            _end_of_sentence = false; //added as no start of sentence char
         case '#': //sentence begin
         case '*':
             _term_number = _term_offset = 0;
@@ -114,6 +116,7 @@ bool HMR3300::term_complete()
                 }
                 return true;
             }
+    if (_end_of_sentence) {
         }
         return false;
     }
