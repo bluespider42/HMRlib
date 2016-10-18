@@ -31,6 +31,11 @@ stages:
 mega2560:
     stage: build
     script:
+        - platformio ci --lib="./src" --board=uno
+
+mega2560:
+    stage: build
+    script:
         - platformio ci --lib="./src" --board=megaatmega2560
 
 feather_m0:
