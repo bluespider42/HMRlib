@@ -62,8 +62,10 @@ private:
     //properties
     long _pitch, _new_pitch;
     long _roll, _new_roll;
-    long _mag, _new_mag;
     long _head, _new_head;
+    long _magX, _new_magX;
+    long _magY, _new_magY;
+    long _magZ, _new_magZ;
 
     unsigned long _last_data_time, _new_data_time;
 

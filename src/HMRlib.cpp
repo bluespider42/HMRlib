@@ -29,6 +29,9 @@ HMR3300::HMR3300()
 : _pitch(HMR_INVALID_TILT)
 , _roll(HMR_INVALID_TILT)
 , _head(HMR_INVALID_HEAD)
+, _magX(HMR_INVALID_MAG)
+, _magY(HMR_INVALID_MAG)
+, _magZ(HMR_INVALID_MAG)
 , _last_data_time(HMR_INVALID_DATA_TIME)
 , _sentence_type(_HMR_SENTENCE_OTHER)
 , _term_number(0)
@@ -144,6 +147,10 @@ bool HMR3300::term_complete() {
                 _roll = _new_roll;
                 _head = _new_head;
                 break;
+            case _HMR_SENTENCE_M:
+                _magX = _new_magX;
+                _magY = _new_magY;
+                _magZ = _new_magZ;
         }
         return true;
     }
@@ -167,6 +174,16 @@ bool HMR3300::term_complete() {
                 break;
             case COMBINE(_HMR_SENTENCE_H, 2):
                 _new_roll = parse_decimal();
+                break;
+            case COMBINE(_HMR_SENTENCE_M, 0):
+                _new_magX = parse_decimal();
+                _new_data_time = millis();
+                break;
+            case COMBINE(_HMR_SENTENCE_M, 1):
+                _new_magY = parse_decimal();
+                break;
+            case COMBINE(_HMR_SENTENCE_M, 2):
+                _new_magZ = parse_decimal();
                 break;
             //add cases for other sentence types
         }
