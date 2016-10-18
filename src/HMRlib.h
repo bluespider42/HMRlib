@@ -46,11 +46,9 @@ public:
         HMR_INVALID_HEAD = 9999,
     };
 
-    //static const int HMR_INVALID_TILT, HMR_INVALID_MAG, HMR_INVALID_HEAD;
-
     HMR3300();
     bool encode(char c); //one character from HMR3300
-    HMR3300 &operator << (char c) {encode(c); return *this;}
+    HMR3300 &operator << (char c) {encode(c); return *this;} //untested
 
     void get_data(long *pitch, long *roll, long *head, unsigned long *data_age);
 
@@ -62,13 +60,11 @@ private:
     //properties
     long _pitch, _new_pitch;
     long _roll, _new_roll;
-    long _mag, _new_mag;
     long _head, _new_head;
 
     unsigned long _last_data_time, _new_data_time;
 
     //parsing state variables
-    bool _is_checksum_term;
     char _term[15];
     byte _sentence_type;
     byte _term_number;
@@ -76,7 +72,6 @@ private:
     bool _end_of_sentence;
 
     //internal utilities
-    int from_hex(char a); // not needed
     unsigned long parse_decimal();
     bool term_complete();
     bool hmrisdigit(char c) { return c >= '0' && c <= '9'; }
