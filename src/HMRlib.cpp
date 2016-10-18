@@ -21,17 +21,24 @@ HMR3300::HMR3300()
 }
 
 //public methods
-bool HMR3300::encode(char c)
-{
+bool HMR3300::encode(char c) {
     bool valid_sentence = false;
+    switch(c) {
+        case '.': //decimal point so must be a *H output
+            _sentence_type = _HMR_SENTENCE_H;
+            break;
 
-    switch(c)
-    {
         case ',': // term terminators
+            if (_term_offset < sizeof(_term)) {
+                _term[_term_offset] = 0;
+                valid_sentence = term_complete();
+            }
+            ++_term_number;
+            _term_offset = 0;
+            return valid_sentence;
+
         case '\r':
-        case '\n':
-            if (_term_offset < sizeof(_term))
-            {
+            if (_term_offset < sizeof(_term)) {
                 _term[_term_offset] = 0;
                 valid_sentence = term_complete();
             }
@@ -39,12 +46,23 @@ bool HMR3300::encode(char c)
             ++_term_number;
             _term_offset = 0;
             return valid_sentence;
+
+        case '\n':
+            if (_term_offset < sizeof(_term)) {
+                _term[_term_offset] = 0;
+                valid_sentence = term_complete();
+            }
+            _term_offset = 0;
+            _term_number = 0; //added as no start of sentence char
+            _sentence_type = _HMR_SENTENCE_OTHER; //added as no start of sentence char
             _end_of_sentence = false; //added as no start of sentence char
+            return valid_sentence;
+
         case '#': //sentence begin
-        case '*':
+        case '*': //currently untested
             _term_number = _term_offset = 0;
             _sentence_type = _HMR_SENTENCE_OTHER;
-            _hmr_data_good = false;
+            _end_of_sentence = false;
             return valid_sentence;
     }
     //ordinary characters
@@ -102,48 +120,42 @@ void HMR3300::get_data(long *pitch, long *roll,  long *head, unsigned long *data
 
 #define COMBINE(sentence_type, term_number) (((unsigned)(sentence_type) << 5) | term_number)
 
-bool HMR3300::term_complete()
-{
-            if (_hmr_data_good) {
-                _last_data_time = _new_data_time;
-
-                switch(_sentence_type) {
-                    case _HMR_SENTENCE_OTHER:
-                        _pitch = _new_pitch;
-                        _roll = _new_roll;
-                        _head = _new_head;
-                        break;
-                }
-                return true;
-            }
+bool HMR3300::term_complete() {
     if (_end_of_sentence) {
+        _last_data_time = _new_data_time;
+        switch(_sentence_type) {
+            case _HMR_SENTENCE_H:
+                _pitch = _new_pitch;
+                _roll = _new_roll;
+                _head = _new_head;
+                break;
         }
-        return false;
+        return true;
     }
-    if (_term_number == 0) {
-        if (!hmrstrcmp(_term, _H_TERM))
-            _sentence_type = _HMR_SENTENCE_H;
-        else if (!hmrstrcmp(_term, _M_TERM))
-            _sentence_type = _HMR_SENTENCE_M;
-        else
-            _sentence_type = _HMR_SENTENCE_OTHER;
-        return false;
-    }
+    //if (_term_number == 0 && _sentence_type == _HMR_SENTENCE_OTHER) {
+    //    if (!hmrstrcmp(_term, _H_TERM))
+    //        _sentence_type = _HMR_SENTENCE_H;
+    //    else if (!hmrstrcmp(_term, _M_TERM))
+    //        _sentence_type = _HMR_SENTENCE_M;
+    //    else
+    //        _sentence_type = _HMR_SENTENCE_OTHER;
+    //    return false;
+    //}
     if (_sentence_type != _HMR_SENTENCE_OTHER && _term[0])
         switch(COMBINE(_sentence_type, _term_number)) {
-            case COMBINE(_HMR_SENTENCE_H, 1):
+            case COMBINE(_HMR_SENTENCE_H, 0):
                 _new_head = parse_decimal();
                 _new_data_time = millis();
                 break;
-            case COMBINE(_HMR_SENTENCE_H, 2):
+            case COMBINE(_HMR_SENTENCE_H, 1):
                 _new_pitch = parse_decimal();
                 break;
-            case COMBINE(_HMR_SENTENCE_H, 3):
+            case COMBINE(_HMR_SENTENCE_H, 2):
                 _new_roll = parse_decimal();
                 break;
             //add cases for other sentence types
         }
-        return false;
+    return false;
 }
 
 int HMR3300::hmrstrcmp(const char *str1, const char *str2) {

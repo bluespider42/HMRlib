@@ -38,10 +38,10 @@ private:
     enum {_HMR_SENTENCE_OTHER, _HMR_SENTENCE_H, _HMR_SENTENCE_M};
 
     //properties
-    int _pitch, _new_pitch;
-    int _roll, _new_roll;
-    int _mag, _new_mag;
-    int _head, _new_head;
+    long _pitch, _new_pitch;
+    long _roll, _new_roll;
+    long _mag, _new_mag;
+    long _head, _new_head;
 
     unsigned long _last_data_time, _new_data_time;
 
