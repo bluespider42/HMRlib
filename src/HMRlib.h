@@ -46,7 +46,6 @@ private:
     unsigned long _last_data_time, _new_data_time;
 
     //parsing state variables
-    byte _parity;
     bool _is_checksum_term;
     char _term[15];
     byte _sentence_type;

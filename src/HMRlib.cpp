@@ -8,7 +8,6 @@ HMR3300::HMR3300()
 , _roll(HMR_INVALID_TILT)
 , _head(HMR_INVALID_HEAD)
 , _last_data_time(HMR_INVALID_DATA_TIME)
-, _parity(0)
 , _sentence_type(_HMR_SENTENCE_OTHER)
 , _term_number(0)
 , _term_offset(0)
@@ -29,7 +28,6 @@ bool HMR3300::encode(char c)
     switch(c)
     {
         case ',': // term terminators
-            _parity ^= c;
         case '\r':
         case '\n':
             if (_term_offset < sizeof(_term))
@@ -39,23 +37,17 @@ bool HMR3300::encode(char c)
             }
             ++_term_number;
             _term_offset = 0;
-            _is_checksum_term = c =='*';
             return valid_sentence;
         case '#': //sentence begin
         case '*':
             _term_number = _term_offset = 0;
-            _parity = 0;
             _sentence_type = _HMR_SENTENCE_OTHER;
-            _is_checksum_term = false;
             _hmr_data_good = false;
             return valid_sentence;
     }
     //ordinary characters
     if (_term_offset < sizeof(_term) - 1)
         _term[_term_offset++] = c;
-    if (!_is_checksum_term)
-        _parity ^= c;
-
     return valid_sentence;
 }
 
@@ -110,9 +102,6 @@ void HMR3300::get_data(long *pitch, long *roll,  long *head, unsigned long *data
 
 bool HMR3300::term_complete()
 {
-    if (_is_checksum_term) {
-        byte checksum = 16 * from_hex(_term[0]) + from_hex(_term[1]);
-        if (checksum == _parity) {
             if (_hmr_data_good) {
                 _last_data_time = _new_data_time;
 
