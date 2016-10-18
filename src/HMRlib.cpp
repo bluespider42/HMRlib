@@ -1,3 +1,25 @@
+/*
+HMRlib - a small library for Arduino providing basic HMR serial parsing
+For use with Honeywell Magnetic Sensors: HMR3300.
+
+Serial Parsing based on work by Mikal Hart
+https://github.com/mikalhart/TinyGPS
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 #include "HMRlib.h"
 
 #define _H_TERM "H"
@@ -13,9 +35,6 @@ HMR3300::HMR3300()
 , _term_offset(0)
 , _end_of_sentence(false)
 
-
-//HMR3300::init() {
-//}
 {
     _term[0] = '\0';
 }
@@ -72,45 +91,41 @@ bool HMR3300::encode(char c) {
 }
 
 //internal utilities
-int HMR3300::from_hex(char a)
-{
+int HMR3300::from_hex(char a) {
     if (a >= 'A' && a <= 'F')
         return a - 'A' + 10;
     else if (a >= 'a' && a <= 'f')
         return a - 'a' + 10;
     else
         return a - '0';
-}
+}//not needed
 
-unsigned long HMR3300::parse_decimal()
-{
+unsigned long HMR3300::parse_decimal() {
     char *p = _term;
     bool isneg = *p == '-';
-    if (isneg) ++p;
+    if (isneg) {
+        ++p;
+    }
     unsigned long ret = 100UL * hmratol(p);
     while (hmrisdigit(*p)) ++p;
-    if (*p == '.')
-    {
-        if (hmrisdigit(p[1]))
-        {
-            ret += 10 * (p[1] - '0');
-            if (hmrisdigit(p[2]))
-                ret += p[2] - '0';
+        if (*p == '.') {
+            if (hmrisdigit(p[1])) {
+                ret += 10 * (p[1] - '0');
+                if (hmrisdigit(p[2]))
+                    ret += p[2] - '0';
+            }
         }
-    }
     return isneg ? -ret : ret;
 }
 
-long HMR3300::hmratol(const char *str)
-{
+long HMR3300::hmratol(const char *str) {
     long ret = 0;
     while (hmrisdigit(*str))
         ret = 10 * ret + *str++ - '0';
     return ret;
 }
 
-void HMR3300::get_data(long *pitch, long *roll,  long *head, unsigned long *data_age)
-{
+void HMR3300::get_data(long *pitch, long *roll,  long *head, unsigned long *data_age) {
     if (pitch) *pitch = _pitch;
     if (roll) *roll = _roll;
     if (head) *head = _head;
