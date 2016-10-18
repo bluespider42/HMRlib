@@ -54,12 +54,10 @@ cache:
         - "~/.platformio"
 
 env:
-#    - PLATFORMIO_CI_SRC=path/to/test/file.c
-    - PLATFORMIO_CI_SRC=examples/printData/printData.ino
-#    - PLATFORMIO_CI_SRC=src
+    - PLATFORMIO_CI_SRC=examples/printData
 
 install:
     - pip install -U platformio
 
 script:
-    - platformio ci --lib="./src" --board=adafruit_feather_m0_usb
+    - platformio ci --lib="src" --project_conf=platformio.ini
