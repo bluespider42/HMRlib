@@ -2,7 +2,7 @@
 
 #if defined(__AVR_ATmega328P__)
     #include "SoftwareSerial.h"
-    SoftwareSerial Serial1(0, 1);
+    SoftwareSerial Serial1(10, 11); //Adjust to which pins your device is connected to.
 #endif
 
 HMR3300 hmr;
@@ -25,17 +25,17 @@ void loop() {
     for (unsigned long start = millis(); millis() - start <1000;) {
         while (Serial1.available()) {
             char c = Serial1.read();
-            //Serial.print(c);
             if (hmr.encode(c)) {
+                //will return true if encode() has reached the end of a sentence
                 newData = true;
             }
         }
     }
     if (newData) {
-        hmr.get_data(&pitch, &roll, &head, &data_age);
+        hmr.get_data(&pitch, &roll, &head, &data_age); //update variables with new data
         Serial.print("Pitch: ");
         Serial.print(float(pitch)/100);
-        Serial.write(248);
+        Serial.write(248); //degree symbol in extended ascii
         Serial.print(", Roll: ");
         Serial.print(float(roll)/100);
         Serial.write(248);

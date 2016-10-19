@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/bluespider42/HMRlib.svg?branch=develop)](https://travis-ci.org/bluespider42/HMRlib)
+
 [![Build Status](https://gitlab.com/obic/HMRlib/badges/develop/build.svg)](https://gitlab.com/obic/HMRlib/commits/develop)
 HMRlib
 ======
@@ -7,6 +8,15 @@ Currently only the HMR3300 is supported.
 
 Currently work in progress.
 Work will be slow as my project now uses the HMC6343 sensor instead.
+
+## Compatibility
+**Version 0.0.1**
+
+<!-- Start Table -->
+MCU                | Tested Works | Doesn't Work | Not Tested  | Notes
+------------------ | :----------: | :----------: | :---------: | -----
+ATSAMD21G18A       |      x       |              |             |
+<!-- End Table -->
 
 Usage
 -----
@@ -17,6 +27,8 @@ It will return true once an entire sentence has been parsed.
 Run
  `get_data(long &pitch, long &roll, long &heading, unsigned long &age)`
 to update the variables with the new data.
+
+The angles are given in degrees*100 and the age in milliseconds.
 
 ```
 #include <HMRlib.h>
