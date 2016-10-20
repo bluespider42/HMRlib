@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "HMRlib.h"
 
 #define _H_TERM "H"
-#define _M_TERM "M"
 
 HMR3300::HMR3300()
 : _pitch(HMR_INVALID_TILT)
@@ -91,15 +90,6 @@ bool HMR3300::encode(char c) {
 }
 
 //internal utilities
-int HMR3300::from_hex(char a) {
-    if (a >= 'A' && a <= 'F')
-        return a - 'A' + 10;
-    else if (a >= 'a' && a <= 'f')
-        return a - 'a' + 10;
-    else
-        return a - '0';
-}//not needed
-
 unsigned long HMR3300::parse_decimal() {
     char *p = _term;
     bool isneg = *p == '-';
