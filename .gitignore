@@ -1,3 +1,9 @@
+# platformio
+.pioenvs
+.clang_complete
+.gcc-flags.json
+.piolibdeps
+
 # Compiled Object files
 *.slo
 *.lo
@@ -26,3 +32,6 @@
 *.exe
 *.out
 *.app
+
+# local library
+lib/

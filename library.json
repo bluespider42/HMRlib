@@ -1,0 +1,17 @@
+{
+    "name": "HMRlib",
+    "keywords": "HMR, Pitch, Roll, Heading",
+    "description": "Arduino library for communicating with HMR Magnetometers",
+    "authors":
+    {
+        "name": "Ben",
+        "email": "bluespider42@hotmail.co.uk",
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/bluespider42/HMRlib"
+    },
+    "frameworks": "arduino",
+    "platforms": "atmelavr, atmelsam"
+}
