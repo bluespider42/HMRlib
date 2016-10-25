@@ -12,6 +12,7 @@
         "type": "git",
         "url": "https://github.com/bluespider42/HMRlib"
     },
+    "version": "0.0.1",
     "frameworks": "arduino",
     "platforms": "atmelavr, atmelsam"
 }
